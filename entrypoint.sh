@@ -35,7 +35,7 @@ EXIT_VAL=0
 
 git pull
 echo ${CONFIG}
-ls /
+ls -la
 
 while read -r FILENAME; do
     TMPFILE="${FILENAME}.tmp"
