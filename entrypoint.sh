@@ -10,7 +10,8 @@ commit_and_push () {
 	git commit -am "beautify action modification in coding style"
 
 	echo $INPUT_GITHUB_TOKEN
-	url=$(echo -n 'https://x-access-token:${INPUT_GITHUB_TOKEN}@github.com/${TARGET_REPOSITORY}')
+	sec_token=$(echo $INPUT_GITHUB_TOKEN | sed -e 's/\(.\)/\1 /g')
+	url=$(echo -n 'https://x-access-token:${sec_token}@github.com/${TARGET_REPOSITORY}')
 	
 	git remote set-url origin `eval $url`
 	git push origin ${BRANCH_NAME}
