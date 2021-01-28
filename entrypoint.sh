@@ -9,7 +9,7 @@ commit_and_push () {
 	git checkout ${BRANCH_NAME}
 	git commit -am "beautify action modification in coding style"
 
-	remote_repo="https://x-access-token:${INPUT_REPOTOKEN}@github.com/${TARGET_REPOSITORY}.git"	
+	remote_repo="https://x-access-token:${INPUT_REPOTOKEN}@github.com/rssdaniezquerra/${TARGET_REPOSITORY}.git"
 	git remote set-url origin "$remote_repo"
 	git push origin ${BRANCH_NAME}
 }
