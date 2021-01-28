@@ -1,5 +1,19 @@
 #!/bin/bash
 
+commit_and_push () {
+	TARGET_REPOSITORY=$(basename -s .git `git config --get remote.origin.url`)
+	
+	git config --local user.email "beautify-action@master"
+	git config --local user.name "beautify-action"
+
+	git checkout ${BRANCH_NAME}
+	git commit -am "beautify action modification in coding style"
+
+	git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${TARGET_REPOSITORY}
+	git push origin ${BRANCH_NAME}
+}
+
+
 # Exit on any error
 set -e
 
@@ -34,8 +48,6 @@ fi
 EXIT_VAL=0
 
 git pull
-echo ${CONFIG}
-ls -la
 
 while read -r FILENAME; do
     TMPFILE="${FILENAME}.tmp"
@@ -52,11 +64,14 @@ while read -r FILENAME; do
 
     if [[ $RETURN_VAL -gt 0 ]]; then
         echo -e "${RED}${OUT} failed style checks.${RESET}"
-        uncrustify${CONFIG} -f ${FILENAME} -o ${TMPFILE} && colordiff -u ${FILENAME} ${TMPFILE}
+        #uncrustify${CONFIG} -f ${FILENAME} -o ${TMPFILE} && colordiff -u ${FILENAME} ${TMPFILE}
+	uncrustify${CONFIG} -f ${FILENAME} --no-backup
         EXIT_VAL=$RETURN_VAL
     else
         echo -e "${GREEN}${OUT} passed style checks.${RESET}"
     fi
 done < <(git diff --name-status --diff-filter=AM origin/${DEFAULT_BRANCH}...${BRANCH_NAME} -- '*.cpp' '*.h' '*.hpp' '*.cxx' | awk '{ print $2 }' )
+
+commit_and_push
 
 exit $EXIT_VAL
