@@ -9,11 +9,10 @@ commit_and_push () {
 	git checkout ${BRANCH_NAME}
 	git commit -am "beautify action modification in coding style"
 
-	echo $INPUT_GITHUB_TOKEN
-	sec_token=$(echo $INPUT_GITHUB_TOKEN | sed -e 's/\(.\)/\1 /g')
-	url=$(echo -n 'https://x-access-token:${sec_token}@github.com/${TARGET_REPOSITORY}')
 	
-	git remote set-url origin `eval $url`
+	url=$(echo -n 'https://x-access-token:${sec_token}@github.com/${TARGET_REPOSITORY}')
+	remote_repo="https://x-access-token:${INPUT_GITHUB_TOKEN}@github.com/${TARGET_REPOSITORY}.git"	
+	git remote set-url origin "$remote_repo"
 	git push origin ${BRANCH_NAME}
 }
 
