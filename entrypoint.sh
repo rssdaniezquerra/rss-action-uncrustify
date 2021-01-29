@@ -1,7 +1,7 @@
 #!/bin/bash
 
 commit_and_push () {
-	TARGET_REPOSITORY=$(basename -s .git `git config --get remote.origin.url`)
+	TARGET_REPOSITORY=$(git config --get remote.origin.url | awk -F':' '{print $2}')
 	
 	git config --local user.email "beautify-action@master"
 	git config --local user.name "beautify-action"
