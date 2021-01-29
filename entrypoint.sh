@@ -7,7 +7,7 @@ commit_and_push () {
 	git config --local user.name "beautify-action"
 
 	git checkout ${BRANCH_NAME}
-	git commit -am "beautify action modification in coding style"
+	git commit -am "Beautify action based on coding style"
 
 	remote_repo="https://x-access-token:${INPUT_REPOTOKEN}@github.com/rssdaniezquerra/${TARGET_REPOSITORY}.git"
 	git remote set-url origin "$remote_repo"
