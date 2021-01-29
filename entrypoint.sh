@@ -1,5 +1,20 @@
 #!/bin/bash
 
+commit_and_push () {
+	TARGET_REPOSITORY=$(git config --get remote.origin.url | awk -F':' '{print $2}')
+	
+	git config --local user.email "beautify-action@master"
+	git config --local user.name "beautify-action"
+
+	git checkout ${BRANCH_NAME}
+	git commit -am "Beautify action based on coding style"
+
+	remote_repo="https://x-access-token:${INPUT_REPOTOKEN}@github.com/rssdaniezquerra/${TARGET_REPOSITORY}.git"
+	git remote set-url origin "$remote_repo"
+	git push origin ${BRANCH_NAME}
+}
+
+
 # Exit on any error
 set -e
 
@@ -33,6 +48,8 @@ fi
 
 EXIT_VAL=0
 
+git pull
+
 while read -r FILENAME; do
     TMPFILE="${FILENAME}.tmp"
     # Failure is passed to stderr so we need to redirect that to grep so we can pretty print some useful output instead of the deafult
@@ -48,11 +65,15 @@ while read -r FILENAME; do
 
     if [[ $RETURN_VAL -gt 0 ]]; then
         echo -e "${RED}${OUT} failed style checks.${RESET}"
-        uncrustify${CONFIG} -f ${FILENAME} -o ${TMPFILE} && colordiff -u ${FILENAME} ${TMPFILE}
+        #uncrustify${CONFIG} -f ${FILENAME} -o ${TMPFILE} && colordiff -u ${FILENAME} ${TMPFILE}
+	uncrustify${CONFIG} -f ${FILENAME} -o ${TMPFILE}
+	mv ${TMPFILE} ${FILENAME}
         EXIT_VAL=$RETURN_VAL
     else
         echo -e "${GREEN}${OUT} passed style checks.${RESET}"
     fi
 done < <(git diff --name-status --diff-filter=AM origin/${DEFAULT_BRANCH}...${BRANCH_NAME} -- '*.cpp' '*.h' '*.hpp' '*.cxx' | awk '{ print $2 }' )
+
+commit_and_push
 
 exit $EXIT_VAL
