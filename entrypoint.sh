@@ -47,7 +47,7 @@ fi
 git fetch origin
 
 EXIT_VAL=0
-NO_CHANGES = 0
+NO_CHANGES=0
 
 while read -r FILENAME; do
     TMPFILE="${FILENAME}.tmp"
