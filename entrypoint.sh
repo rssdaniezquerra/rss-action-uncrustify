@@ -1,14 +1,13 @@
 #!/bin/bash
 
 commit_and_push () {
-	echo "To push results"
 	git config --local user.email "beautify-action@master"
 	git config --local user.name "beautify-action"
 
 	git checkout ${GITHUB_HEAD_REF}
 	git commit -am "Beautify action based on coding style"
 
-	remote_repo="https://x-access-token:${INPUT_REPOTOKEN}@github.com/rssdaniezquerra/${GITHUB_REPOSITORY}.git"
+	remote_repo="https://x-access-token:${INPUT_REPOTOKEN}@github.com/${GITHUB_REPOSITORY}.git"
 	git remote set-url origin "$remote_repo"
 	git push origin ${GITHUB_HEAD_REF}
 }
@@ -46,12 +45,10 @@ else
 fi
 
 git fetch origin
-echo "Starting processing"
 
 EXIT_VAL=0
 
 while read -r FILENAME; do
-    echo "Working on $FILENAME"
     TMPFILE="${FILENAME}.tmp"
     # Failure is passed to stderr so we need to redirect that to grep so we can pretty print some useful output instead of the deafult
     # Success is passed to stdout, so we need to redirect that separately so we can capture either case.
@@ -68,7 +65,7 @@ while read -r FILENAME; do
         echo -e "${RED}${OUT} failed style checks.${RESET}"
         #uncrustify${CONFIG} -f ${FILENAME} -o ${TMPFILE} && colordiff -u ${FILENAME} ${TMPFILE}
 	OUT=$(uncrustify${CONFIG} -f ${FILENAME} -o ${TMPFILE})
-	#echo $OUT
+	$RETURN_VAL=$?
 	mv ${TMPFILE} ${FILENAME}
         EXIT_VAL=$RETURN_VAL 	
     else
