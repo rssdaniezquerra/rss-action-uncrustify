@@ -46,7 +46,7 @@ fi
 
 git fetch
 #git checkout ${GITHUB_BASE_REF}
-#git pull
+git pull
 
 EXIT_VAL=0
 
