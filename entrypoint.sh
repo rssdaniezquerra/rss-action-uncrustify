@@ -70,6 +70,7 @@ while read -r FILENAME; do
         EXIT_VAL=$RETURN_VAL 	
     else
         echo -e "${GREEN}${OUT} passed style checks.${RESET}"
+	EXIT_VAL=$RETURN_VAL
     fi
 done < <(git diff --name-status --diff-filter=AM origin/${GITHUB_BASE_REF}...origin/${GITHUB_HEAD_REF} -- '*.cpp' '*.h' '*.hpp' '*.cxx' | awk '{ print $2 }' )
 
