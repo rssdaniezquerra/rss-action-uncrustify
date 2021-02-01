@@ -4,7 +4,7 @@ commit_and_push () {
 	git config --local user.email "beautify-action@master"
 	git config --local user.name "beautify-action"
 
-	git checkout ${$GITHUB_HEAD_REF}
+	git checkout ${GITHUB_HEAD_REF}
 	git commit -am "Beautify action based on coding style"
 
 	remote_repo="https://x-access-token:${INPUT_REPOTOKEN}@github.com/rssdaniezquerra/${GITHUB_REPOSITORY}.git"
