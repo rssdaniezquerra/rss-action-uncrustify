@@ -47,6 +47,7 @@ fi
 git fetch origin
 
 EXIT_VAL=0
+NO_CHANGES = 0
 
 while read -r FILENAME; do
     TMPFILE="${FILENAME}.tmp"
@@ -67,13 +68,15 @@ while read -r FILENAME; do
 	OUT=$(uncrustify${CONFIG} -f ${FILENAME} -o ${TMPFILE})
 	RETURN_VAL=$?
 	mv ${TMPFILE} ${FILENAME}
-        EXIT_VAL=$RETURN_VAL 	
+        EXIT_VAL=$RETURN_VAL
+	NO_CHANGES=$((NO_CHANGES + 1))
     else
         echo -e "${GREEN}${OUT} passed style checks.${RESET}"
-	EXIT_VAL=$RETURN_VAL
     fi
 done < <(git diff --name-status --diff-filter=AM origin/${GITHUB_BASE_REF}...origin/${GITHUB_HEAD_REF} -- '*.cpp' '*.h' '*.hpp' '*.cxx' | awk '{ print $2 }' )
 
-commit_and_push
+if [[ $NO_CHANGES -gt 0 ]]; then
+	commit_and_push
+fi
 
 exit $EXIT_VAL
