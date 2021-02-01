@@ -46,8 +46,6 @@ fi
 
 EXIT_VAL=0
 
-git pull
-
 while read -r FILENAME; do
     TMPFILE="${FILENAME}.tmp"
     # Failure is passed to stderr so we need to redirect that to grep so we can pretty print some useful output instead of the deafult
