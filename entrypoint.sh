@@ -1,6 +1,7 @@
 #!/bin/bash
 
 commit_and_push () {
+	echo "To push results"
 	git config --local user.email "beautify-action@master"
 	git config --local user.name "beautify-action"
 
@@ -47,10 +48,12 @@ fi
 git fetch
 #git checkout ${GITHUB_BASE_REF}
 git pull
+echo "Starting processing"
 
 EXIT_VAL=0
 
 while read -r FILENAME; do
+    echo "Working on $FILENAME"
     TMPFILE="${FILENAME}.tmp"
     # Failure is passed to stderr so we need to redirect that to grep so we can pretty print some useful output instead of the deafult
     # Success is passed to stdout, so we need to redirect that separately so we can capture either case.
