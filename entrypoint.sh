@@ -46,7 +46,7 @@ else
 fi
 
 git fetch
-#git checkout ${GITHUB_BASE_REF}
+git checkout ${GITHUB_BASE_REF}
 git pull
 echo "Starting processing"
 
