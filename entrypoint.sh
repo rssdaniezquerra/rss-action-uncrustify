@@ -44,7 +44,8 @@ else
     CONFIG=" -c /default.cfg"
 fi
 
-git pull origin
+git checkout ${GITHUB_BASE_REF}
+git pull
 
 EXIT_VAL=0
 
