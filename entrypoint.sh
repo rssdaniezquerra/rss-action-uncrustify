@@ -1,21 +1,15 @@
 #!/bin/bash
 
 commit_and_push () {
-	TARGET_REPOSITORY=$(git config --get remote.origin.url | awk -F':' '{print $2}')
-	echo "GITHUB_REPOSITORY: $GITHUB_REPOSITORY"
-	echo "REF BRANCH: $GITHUB_HEAD_REF"
-	echo "BASE BRANCH: $GITHUB_BASE_REF"
-	echo "Target repository: $TARGET_REPOSITORY"
-	echo "Branch name: $BRANCH_NAME"
 	git config --local user.email "beautify-action@master"
 	git config --local user.name "beautify-action"
 
-	git checkout ${BRANCH_NAME}
+	git checkout ${$GITHUB_HEAD_REF}
 	git commit -am "Beautify action based on coding style"
 
-	remote_repo="https://x-access-token:${INPUT_REPOTOKEN}@github.com/rssdaniezquerra/${TARGET_REPOSITORY}.git"
+	remote_repo="https://x-access-token:${INPUT_REPOTOKEN}@github.com/rssdaniezquerra/${GITHUB_REPOSITORY}.git"
 	git remote set-url origin "$remote_repo"
-	git push origin ${BRANCH_NAME}
+	git push origin ${GITHUB_HEAD_REF}
 }
 
 
@@ -52,11 +46,6 @@ fi
 
 EXIT_VAL=0
 
-echo "GITHUB_REPOSITORY: $GITHUB_REPOSITORY"
-echo "REF BRANCH: $GITHUB_HEAD_REF"
-echo "BASE BRANCH: $GITHUB_BASE_REF"
-
-
 git pull
 
 while read -r FILENAME; do
@@ -82,7 +71,7 @@ while read -r FILENAME; do
     else
         echo -e "${GREEN}${OUT} passed style checks.${RESET}"
     fi
-done < <(git diff --name-status --diff-filter=AM origin/${DEFAULT_BRANCH}...${BRANCH_NAME} -- '*.cpp' '*.h' '*.hpp' '*.cxx' | awk '{ print $2 }' )
+done < <(git diff --name-status --diff-filter=AM origin/${GITHUB_BASE_REF}...${GITHUB_HEAD_REF} -- '*.cpp' '*.h' '*.hpp' '*.cxx' | awk '{ print $2 }' )
 
 commit_and_push
 
