@@ -44,6 +44,8 @@ else
     CONFIG=" -c /default.cfg"
 fi
 
+git pull origin
+
 EXIT_VAL=0
 
 while read -r FILENAME; do
