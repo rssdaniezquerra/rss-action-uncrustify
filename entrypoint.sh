@@ -48,6 +48,7 @@ fi
 #git fetch
 #git checkout ${GITHUB_HEAD_REF}
 #git pull
+git status
 echo "Starting processing"
 
 EXIT_VAL=0
