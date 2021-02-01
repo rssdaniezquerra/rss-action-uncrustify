@@ -46,9 +46,6 @@ else
 fi
 
 git fetch origin
-#git checkout ${GITHUB_HEAD_REF}
-#git pull
-git status
 echo "Starting processing"
 
 EXIT_VAL=0
@@ -69,8 +66,8 @@ while read -r FILENAME; do
 
     if [[ $RETURN_VAL -gt 0 ]]; then
         echo -e "${RED}${OUT} failed style checks.${RESET}"
-        uncrustify${CONFIG} -f ${FILENAME} -o ${TMPFILE} && colordiff -u ${FILENAME} ${TMPFILE}
-	#OUT=$(uncrustify${CONFIG} -f ${FILENAME} -o ${TMPFILE})
+        #uncrustify${CONFIG} -f ${FILENAME} -o ${TMPFILE} && colordiff -u ${FILENAME} ${TMPFILE}
+	OUT=$(uncrustify${CONFIG} -f ${FILENAME} -o ${TMPFILE})
 	#echo $OUT
 	mv ${TMPFILE} ${FILENAME}
         EXIT_VAL=$RETURN_VAL 	
