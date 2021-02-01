@@ -2,7 +2,7 @@
 
 commit_and_push () {
 	TARGET_REPOSITORY=$(git config --get remote.origin.url | awk -F':' '{print $2}')
-	
+	echo $TARGET_REPOSITORY	
 	git config --local user.email "beautify-action@master"
 	git config --local user.name "beautify-action"
 
@@ -67,6 +67,7 @@ while read -r FILENAME; do
         echo -e "${RED}${OUT} failed style checks.${RESET}"
         #uncrustify${CONFIG} -f ${FILENAME} -o ${TMPFILE} && colordiff -u ${FILENAME} ${TMPFILE}
 	uncrustify${CONFIG} -f ${FILENAME} -o ${TMPFILE}
+	echo $?
 	mv ${TMPFILE} ${FILENAME}
         EXIT_VAL=$RETURN_VAL
     else
