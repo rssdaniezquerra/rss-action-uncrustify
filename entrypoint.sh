@@ -65,7 +65,7 @@ while read -r FILENAME; do
         echo -e "${RED}${OUT} failed style checks.${RESET}"
         #uncrustify${CONFIG} -f ${FILENAME} -o ${TMPFILE} && colordiff -u ${FILENAME} ${TMPFILE}
 	OUT=$(uncrustify${CONFIG} -f ${FILENAME} -o ${TMPFILE})
-	$RETURN_VAL=$?
+	RETURN_VAL=$?
 	mv ${TMPFILE} ${FILENAME}
         EXIT_VAL=$RETURN_VAL 	
     else
