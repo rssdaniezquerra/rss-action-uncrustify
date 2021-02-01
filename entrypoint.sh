@@ -44,6 +44,7 @@ else
     CONFIG=" -c /default.cfg"
 fi
 
+git fetch
 git checkout ${GITHUB_BASE_REF}
 git pull
 
