@@ -2,7 +2,11 @@
 
 commit_and_push () {
 	TARGET_REPOSITORY=$(git config --get remote.origin.url | awk -F':' '{print $2}')
-	echo $TARGET_REPOSITORY	
+	echo "GITHUB_REPOSITORY: $GITHUB_REPOSITORY"
+	echo "REF BRANCH: $GITHUB_HEAD_REF"
+	echo "BASE BRANCH: $GITHUB_BASE_REF"
+	echo "Target repository: $TARGET_REPOSITORY"
+	echo "Branch name: $BRANCH_NAME"
 	git config --local user.email "beautify-action@master"
 	git config --local user.name "beautify-action"
 
@@ -66,10 +70,10 @@ while read -r FILENAME; do
     if [[ $RETURN_VAL -gt 0 ]]; then
         echo -e "${RED}${OUT} failed style checks.${RESET}"
         #uncrustify${CONFIG} -f ${FILENAME} -o ${TMPFILE} && colordiff -u ${FILENAME} ${TMPFILE}
-	uncrustify${CONFIG} -f ${FILENAME} -o ${TMPFILE}
-	echo $?
+	OUT=$(uncrustify${CONFIG} -f ${FILENAME} -o ${TMPFILE})
+	echo $OUT
 	mv ${TMPFILE} ${FILENAME}
-        EXIT_VAL=$RETURN_VAL
+        EXIT_VAL=$RETURN_VAL 	
     else
         echo -e "${GREEN}${OUT} passed style checks.${RESET}"
     fi
