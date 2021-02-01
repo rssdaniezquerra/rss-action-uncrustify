@@ -52,6 +52,11 @@ fi
 
 EXIT_VAL=0
 
+echo "GITHUB_REPOSITORY: $GITHUB_REPOSITORY"
+echo "REF BRANCH: $GITHUB_HEAD_REF"
+echo "BASE BRANCH: $GITHUB_BASE_REF"
+
+
 git pull
 
 while read -r FILENAME; do
