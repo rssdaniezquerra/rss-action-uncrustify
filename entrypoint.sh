@@ -45,9 +45,9 @@ else
     CONFIG=" -c /default.cfg"
 fi
 
-git fetch
-git checkout ${GITHUB_HEAD_REF}
-git pull
+#git fetch
+#git checkout ${GITHUB_HEAD_REF}
+#git pull
 echo "Starting processing"
 
 EXIT_VAL=0
@@ -76,7 +76,7 @@ while read -r FILENAME; do
     else
         echo -e "${GREEN}${OUT} passed style checks.${RESET}"
     fi
-done < <(git diff --name-status --diff-filter=AM ${GITHUB_BASE_REF}...${GITHUB_HEAD_REF} -- '*.cpp' '*.h' '*.hpp' '*.cxx' | awk '{ print $2 }' )
+done < <(git diff --name-status --diff-filter=AM origin/${GITHUB_BASE_REF}...origin/${GITHUB_HEAD_REF} -- '*.cpp' '*.h' '*.hpp' '*.cxx' | awk '{ print $2 }' )
 
 commit_and_push
 
