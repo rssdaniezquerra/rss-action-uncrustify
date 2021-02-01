@@ -5,6 +5,12 @@ inputs:
   configPath:
     description: 'Alternate configuration file to use'
     required: false
+  defaultBranch:
+    description: 'Alternative default branch name, default is master'
+    required: false
+  repoToken:
+    description: 'Github secret token.'
+    required: true
 runs:
   using: 'docker'
   image: 'Dockerfile'
